@@ -39,7 +39,7 @@ var announce = (function() {
           padcookie.setPref("ep_announce-enabled", this.checked);
         });
 
-      var $label = $('<label for="ep_announce-enabled" data-l10n-id="pad.ep_announce.checkbox">Announce users as they join</label>')
+      var $label = $('<label for="ep_announce-enabled" data-l10n-id="pad.ep_announce.checkbox">Announce on entry</label>')
 
       $('#userlistbuttonarea').prepend([$checkbox, $label])
 
