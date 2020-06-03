@@ -33,13 +33,13 @@ var announce = (function() {
 
       chime = new Audio("../static/plugins/ep_announce/static/audio/chime.mp3")
 
-      var $checkbox = $('<input type="checkbox" id="ep_announce-enable"></input>')
-        .prop("checked", padcookie.getPref("ep_announce.enabled") === true)
+      var $checkbox = $('<input type="checkbox" id="ep_announce-enabled"></input>')
+        .prop("checked", padcookie.getPref("ep_announce-enabled") === true)
         .on("change", function() {
-          padcookie.setPref("ep_announce.enabled", this.checked);
+          padcookie.setPref("ep_announce-enabled", this.checked);
         });
 
-      var $label = $('<label for="ep_announce-enable" data-l10n-id="pad.ep_announce.checkbox">Announce users as they join</label>')
+      var $label = $('<label for="ep_announce-enabled" data-l10n-id="pad.ep_announce.checkbox">Announce users as they join</label>')
 
       $('#userlistbuttonarea').prepend([$checkbox, $label])
 
@@ -74,7 +74,7 @@ var announce = (function() {
       }
 
       if (
-        $('#ep_announce-enable').prop('checked') === true && // feature is enabled
+        $('#ep_announce-enabled').prop('checked') === true && // feature is enabled
         joinedUserId !== myUserId &&                         // not an event for the viewing user
         userIdList.indexOf(joinedUserId) === -1              // not already in the list (in the list would imply updating or refreshing their page)
       ) {
