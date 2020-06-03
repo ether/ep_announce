@@ -1,0 +1,12 @@
+{
+    "parts": [
+        {
+            "name": "ep_announce",
+            "client_hooks": {
+                "postAceInit": "ep_announce/static/js/announce:announce.postAceInit",
+                "userJoinOrUpdate": "ep_announce/static/js/announce:announce.userJoinOrUpdate",
+                "userLeave": "ep_announce/static/js/announce:announce.userLeave"
+            }
+        }
+    ]
+}
