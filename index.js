@@ -1,6 +1,6 @@
 // vim: et:ts=2:sw=2:sts=2:ft=javascript
 /**
- * Copyright 2013 j <j@mailb.org>
+ * Copyright 2020 j <dan@danielkrol.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-// TODO the above?
-// TODO - delete this file?
 
 var eejs = require('ep_etherpad-lite/node/eejs/');
 
