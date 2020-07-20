@@ -44,15 +44,22 @@ var announce = (function() {
       callback();
     },
 
+    // Separated for testing
+    setUserIdList: function (newUserIdList) {
+      userIdList = newUserIdList
+    },
+
     updateUserIdList: function () {
       if (self._pad === undefined) {
         return // too early
       }
-      userIdList = self._pad.collabClient
+      self.setUserIdList(
+        self._pad.collabClient
         .getConnectedUsers()
         .map(function(user) {
           return user.userId
-        });
+        })
+      );
     },
 
     playChime: function() {
@@ -98,3 +105,4 @@ var announce = (function() {
 })();
 
 exports.announce = announce;
+window.ep_announce = announce // Access to do some unit tests. If there's a more formal way to do this for all plugins, we can change to that.
