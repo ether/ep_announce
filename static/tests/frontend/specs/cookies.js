@@ -2,19 +2,26 @@ describe('set audio announcement via cookie', function() {
   context('cookie is set to false', function() {
     before(function(done) {
       helper.newPad({
-        padPrefs: {"ep_announce.enabled": false},
+        padPrefs: {"ep_announce-enabled": false},
         cb: done
       });
       this.timeout(60000);
     });
 
-    it('the checkbox is set to false', function(done) {
+    it('the checkbox is set to false and will change to true', function(done) {
       this.timeout(60000);
       var chrome$ = helper.padChrome$;
 
       var $enableAnnounce = chrome$("#ep_announce-enabled");
       expect($enableAnnounce.prop("checked")).to.be(false)
-      done()
+      $enableAnnounce.click()
+      helper.waitFor(function(){
+        return $enableAnnounce.prop("checked") === true;
+      }, 1000).done(function() {
+        expect(chrome$.window.document.cookie.search("ep_announce-enabled%22%3Atrue")).to.not.be(-1)
+        expect(chrome$.window.document.cookie.search("ep_announce-enabled%22%3Afalse")).to.be(-1)
+        done()
+      })
     });
   });
 
@@ -27,15 +34,19 @@ describe('set audio announcement via cookie', function() {
       this.timeout(60000);
     });
 
-    it('the checkbox is set to true', function(done) {
+    it('the checkbox is set to true and will change to false', function(done) {
       this.timeout(60000);
       var chrome$ = helper.padChrome$;
       var $enableAnnounce = chrome$("#ep_announce-enabled");
       expect($enableAnnounce.prop("checked")).to.be(true)
-      done()
+      $enableAnnounce.click()
+      helper.waitFor(function(){
+        return $enableAnnounce.prop("checked") === false;
+      }, 1000).done(function() {
+        expect(chrome$.window.document.cookie.search("ep_announce-enabled%22%3Afalse")).to.not.be(-1)
+        expect(chrome$.window.document.cookie.search("ep_announce-enabled%22%3Atrue")).to.be(-1)
+        done()
+      })
     });
   });
-
-  // TODO - can I have access to the plugin object directly? I could test the functions much more easily, here and in WebRTC
-
 });
