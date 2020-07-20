@@ -39,7 +39,7 @@ var announce = (function() {
 
       var $label = $('<label for="ep_announce-enabled" data-l10n-id="pad.ep_announce.checkbox">Announce on entry</label>')
 
-      $('#userlistbuttonarea').prepend([$checkbox, $label])
+      $('#userlistbuttonarea').append($("<p></p>").append([$checkbox, $label]))
 
       callback();
     },
