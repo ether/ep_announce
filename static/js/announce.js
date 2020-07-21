@@ -86,6 +86,8 @@ var announce = (function() {
         self.playChime();
       }
 
+      // Done after, because we want to see if the user joining or updating
+      // is in the list before updating the list
       self.updateUserIdList();
       callback();
     },

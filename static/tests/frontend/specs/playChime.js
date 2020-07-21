@@ -29,9 +29,7 @@ describe('test that the chime rings under various conditions and triggers', func
 
       chrome$.window.ep_announce.playChime = done
 
-      chrome$.window.ep_announce.userJoinOrUpdate(null, {userInfo: {userId: 1000}, debug: "TESTING"}, function() {
-        throw Error("playChime did not happen")
-      })
+      chrome$.window.ep_announce.userJoinOrUpdate(null, {userInfo: {userId: 1000}}, function(){})
     });
 
     it('does not play chime if list is uninitialized', function(done) {
@@ -42,7 +40,7 @@ describe('test that the chime rings under various conditions and triggers', func
       }
       chrome$.window.ep_announce.setUserIdList(undefined)
 
-      chrome$.window.ep_announce.userJoinOrUpdate(null, {userInfo: {userId: 1000}, debug: "TESTING"}, done)
+      chrome$.window.ep_announce.userJoinOrUpdate(null, {userInfo: {userId: 1000}}, done)
     });
 
     it('does not play chime if viewing user ID is uninitialized', function(done) {
@@ -55,7 +53,7 @@ describe('test that the chime rings under various conditions and triggers', func
         return undefined
       }
 
-      chrome$.window.ep_announce.userJoinOrUpdate(null, {userInfo: {userId: 1000}, debug: "TESTING"}, done)
+      chrome$.window.ep_announce.userJoinOrUpdate(null, {userInfo: {userId: 1000}}, done)
     });
 
     it('does not play chime for events related to the viewing user ID', function(done) {
@@ -68,7 +66,7 @@ describe('test that the chime rings under various conditions and triggers', func
         return 1000
       }
 
-      chrome$.window.ep_announce.userJoinOrUpdate(null, {userInfo: {userId: 1000}, debug: "TESTING"}, done)
+      chrome$.window.ep_announce.userJoinOrUpdate(null, {userInfo: {userId: 1000}}, done)
     });
 
     it('does not play chime for events related to the users already in the list of current users', function(done) {
@@ -79,7 +77,7 @@ describe('test that the chime rings under various conditions and triggers', func
       }
       chrome$.window.ep_announce.setUserIdList([1000])
 
-      chrome$.window.ep_announce.userJoinOrUpdate(null, {userInfo: {userId: 1000}, debug: "TESTING"}, done)
+      chrome$.window.ep_announce.userJoinOrUpdate(null, {userInfo: {userId: 1000}}, done)
     });
   });
 
@@ -104,7 +102,7 @@ describe('test that the chime rings under various conditions and triggers', func
         throw Error("playChime happened despite feature being disabled")
       }
 
-      chrome$.window.ep_announce.userJoinOrUpdate(null, {userInfo: {userId: 1000}, debug: "TESTING"}, done)
+      chrome$.window.ep_announce.userJoinOrUpdate(null, {userInfo: {userId: 1000}}, done)
     });
   });
 });
