@@ -1,9 +1,21 @@
 {
   "name": "ep_announce",
+  "homepage": "https://github.com/JohnMcLear/ep_announce#readme",
+  "repository": {
+    "url": "git@github.com:JohnMcLear/ep_announce.git",
+    "type": "git"
+  },
   "version": "0.0.18",
   "description": "Plays a chime when other users join on Etherpad",
-  "author": "Daniel Krol <dan@danielkrol.com>",
-  "contributors": [],
+  "author": {
+      "name" : "Daniel Krol"
+    , "email" : "dan@danielkrol.com"
+  },
+  "contributors": [
+    { "name" : "John McLear"
+    , "email" : "john@mclear.co.uk"
+    }
+  ],
   "engines": {
     "node": ">=0.6.3"
   },
