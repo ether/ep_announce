@@ -1,6 +1,6 @@
 {
   "name": "ep_announce",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Plays a chime when other users join on Etherpad",
   "author": "Daniel Krol <dan@danielkrol.com>",
   "contributors": [],
