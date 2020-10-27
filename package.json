@@ -7,5 +7,9 @@
   "engines": {
     "node": ">=0.6.3"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "funding": {
+    "type": "individual",
+    "url": "http://etherpad.org/"
+  }
 }
