@@ -14,63 +14,61 @@
  * limitations under the License.
  */
 
-"use strict";
+'use strict';
 
-var padcookie = require("ep_etherpad-lite/static/js/pad_cookie").padcookie;
-var hooks = require("ep_etherpad-lite/static/js/pluginfw/hooks");
+var padcookie = require('ep_etherpad-lite/static/js/pad_cookie').padcookie;
+var hooks = require('ep_etherpad-lite/static/js/pluginfw/hooks');
 
-var announce = (function() {
-  var userIdList;
-  var chime;
+var announce = (function () {
+  let userIdList;
+  let chime;
 
   var self = {
-    //API HOOKS
-    postAceInit: function(hook, context, callback) {
+    // API HOOKS
+    postAceInit(hook, context, callback) {
       self._pad = pad || window.pad;
-      self.updateUserIdList()
+      self.updateUserIdList();
 
-      chime = new Audio("../static/plugins/ep_announce/static/audio/chime.mp3")
+      chime = new Audio('../static/plugins/ep_announce/static/audio/chime.mp3');
 
-      var $checkbox = $('<input type="checkbox" id="ep_announce-enabled"></input>')
-        .prop("checked", padcookie.getPref("ep_announce-enabled") === true)
-        .on("change", function() {
-          padcookie.setPref("ep_announce-enabled", this.checked);
-        });
+      const $checkbox = $('<input type="checkbox" id="ep_announce-enabled"></input>')
+          .prop('checked', padcookie.getPref('ep_announce-enabled') === true)
+          .on('change', function () {
+            padcookie.setPref('ep_announce-enabled', this.checked);
+          });
 
-      var $label = $('<label for="ep_announce-enabled" data-l10n-id="pad.ep_announce.checkbox">Announce on entry</label>')
+      const $label = $('<label for="ep_announce-enabled" data-l10n-id="pad.ep_announce.checkbox">Announce on entry</label>');
 
-      $('#userlistbuttonarea').append($("<p></p>").append([$checkbox, $label]))
+      $('#userlistbuttonarea').append($('<p></p>').append([$checkbox, $label]));
 
       callback();
     },
 
     // Separated for testing
-    setUserIdList: function (newUserIdList) {
-      userIdList = newUserIdList
+    setUserIdList(newUserIdList) {
+      userIdList = newUserIdList;
     },
 
-    updateUserIdList: function () {
+    updateUserIdList() {
       if (self._pad === undefined) {
-        return // too early
+        return; // too early
       }
       self.setUserIdList(
-        self._pad.collabClient
-        .getConnectedUsers()
-        .map(function(user) {
-          return user.userId
-        })
+          self._pad.collabClient
+              .getConnectedUsers()
+              .map((user) => user.userId),
       );
     },
 
-    playChime: function() {
+    playChime() {
       if (chime !== undefined) {
-        chime.play()
+        chime.play();
       }
     },
 
-    userJoinOrUpdate: function(hook, context, callback) {
-      const myUserId = self.getUserId()
-      const joinedUserId = context.userInfo.userId
+    userJoinOrUpdate(hook, context, callback) {
+      const myUserId = self.getUserId();
+      const joinedUserId = context.userInfo.userId;
 
       // still initializing; probably self anyway. Missing a chime this early is probably okay.
       if (userIdList === undefined || myUserId === undefined) {
@@ -80,8 +78,8 @@ var announce = (function() {
 
       if (
         $('#ep_announce-enabled').prop('checked') === true && // feature is enabled
-        joinedUserId !== myUserId &&                         // not an event for the viewing user
-        userIdList.indexOf(joinedUserId) === -1              // not already in the list (in the list would imply updating or refreshing their page)
+        joinedUserId !== myUserId && // not an event for the viewing user
+        userIdList.indexOf(joinedUserId) === -1 // not already in the list (in the list would imply updating or refreshing their page)
       ) {
         self.playChime();
       }
@@ -92,13 +90,13 @@ var announce = (function() {
       callback();
     },
 
-    userLeave: function(hook, context, callback) {
-      self.updateUserIdList()
+    userLeave(hook, context, callback) {
+      self.updateUserIdList();
       callback();
     },
-    //END OF API HOOKS
+    // END OF API HOOKS
 
-    getUserId: function() {
+    getUserId() {
       return self._pad && self._pad.getUserId();
     },
   };
@@ -107,4 +105,4 @@ var announce = (function() {
 })();
 
 exports.announce = announce;
-window.ep_announce = announce // Access to do some unit tests. If there's a more formal way to do this for all plugins, we can change to that.
+window.ep_announce = announce; // Access to do some unit tests. If there's a more formal way to do this for all plugins, we can change to that.
