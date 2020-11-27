@@ -56,7 +56,7 @@ var announce = (function () {
       self.setUserIdList(
           self._pad.collabClient
               .getConnectedUsers()
-              .map((user) => user.userId)
+              .map((user) => user.userId),
       );
     },
 
