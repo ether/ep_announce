@@ -1,8 +1,8 @@
 {
   "name": "ep_announce",
-  "homepage": "https://github.com/JohnMcLear/ep_announce#readme",
+  "homepage": "https://github.com/orblivion/ep_announce#readme",
   "repository": {
-    "url": "git@github.com:JohnMcLear/ep_announce.git",
+    "url": "git@github.com:orblivion/ep_announce.git",
     "type": "git"
   },
   "version": "0.0.18",
