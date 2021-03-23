@@ -62,7 +62,7 @@ const announce = (() => {
 
     playChime: () => {
       if (chime !== undefined) {
-        chime.play();
+        chime.play().catch((err) => {});
       }
     },
 
