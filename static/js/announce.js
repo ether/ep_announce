@@ -16,16 +16,15 @@
 
 'use strict';
 
-var padcookie = require('ep_etherpad-lite/static/js/pad_cookie').padcookie;
-var hooks = require('ep_etherpad-lite/static/js/pluginfw/hooks');
+const padcookie = require('ep_etherpad-lite/static/js/pad_cookie').padcookie;
 
-var announce = (function () {
+const announce = (() => {
   let userIdList;
   let chime;
 
-  var self = {
+  const self = {
     // API HOOKS
-    postAceInit(hook, context, callback) {
+    postAceInit: (hook, context, callback) => {
       self._pad = pad || window.pad;
       self.updateUserIdList();
 
@@ -37,7 +36,8 @@ var announce = (function () {
             padcookie.setPref('ep_announce-enabled', this.checked);
           });
 
-      const $label = $('<label for="ep_announce-enabled" data-l10n-id="pad.ep_announce.checkbox">Announce on entry</label>');
+      const $label = $('<label for="ep_announce-enabled" data-l10n-id="pad.ep_announce.checkbox">' +
+                       'Announce on entry</label>');
 
       $('#userlistbuttonarea').append($('<p></p>').append([$checkbox, $label]));
 
@@ -45,11 +45,11 @@ var announce = (function () {
     },
 
     // Separated for testing
-    setUserIdList(newUserIdList) {
+    setUserIdList: (newUserIdList) => {
       userIdList = newUserIdList;
     },
 
-    updateUserIdList() {
+    updateUserIdList: () => {
       if (self._pad === undefined) {
         return; // too early
       }
@@ -60,13 +60,13 @@ var announce = (function () {
       );
     },
 
-    playChime() {
+    playChime: () => {
       if (chime !== undefined) {
-        chime.play();
+        chime.play().catch((err) => {});
       }
     },
 
-    userJoinOrUpdate(hook, context, callback) {
+    userJoinOrUpdate: (hook, context, callback) => {
       const myUserId = self.getUserId();
       const joinedUserId = context.userInfo.userId;
 
@@ -79,7 +79,8 @@ var announce = (function () {
       if (
         $('#ep_announce-enabled').prop('checked') === true && // feature is enabled
         joinedUserId !== myUserId && // not an event for the viewing user
-        userIdList.indexOf(joinedUserId) === -1 // not already in the list (in the list would imply updating or refreshing their page)
+        // not already in the list (in the list would imply updating or refreshing their page)
+        userIdList.indexOf(joinedUserId) === -1
       ) {
         self.playChime();
       }
@@ -90,19 +91,19 @@ var announce = (function () {
       callback();
     },
 
-    userLeave(hook, context, callback) {
+    userLeave: (hook, context, callback) => {
       self.updateUserIdList();
       callback();
     },
     // END OF API HOOKS
 
-    getUserId() {
-      return self._pad && self._pad.getUserId();
-    },
+    getUserId: () => self._pad && self._pad.getUserId(),
   };
 
   return self;
 })();
 
 exports.announce = announce;
-window.ep_announce = announce; // Access to do some unit tests. If there's a more formal way to do this for all plugins, we can change to that.
+// Access to do some unit tests. If there's a more formal way to do this for all plugins, we can
+// change to that.
+window.ep_announce = announce;

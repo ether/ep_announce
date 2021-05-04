@@ -1,9 +1,11 @@
+'use strict';
+
 describe('test that the chime rings under various conditions and triggers', function () {
   context('feature is enabled', function () {
     let origGetUserId;
 
     afterEach(function (done) {
-      chrome$ = helper.padChrome$;
+      const chrome$ = helper.padChrome$;
       chrome$.window.ep_announce.getUserId = origGetUserId;
       done();
     });
@@ -13,10 +15,10 @@ describe('test that the chime rings under various conditions and triggers', func
         padPrefs: {'ep_announce-enabled': true},
         cb() {
           helper.waitFor(() => {
-            chrome$ = helper.padChrome$;
+            const chrome$ = helper.padChrome$;
             return chrome$ && chrome$('#ep_announce-enabled').length === 1;
           }, 1000).done(() => {
-            origGetUserId = chrome$.window.ep_announce.getUserId;
+            origGetUserId = helper.padChrome$.window.ep_announce.getUserId;
             done();
           });
         },
@@ -24,12 +26,11 @@ describe('test that the chime rings under various conditions and triggers', func
       this.timeout(60000);
     });
 
-    it('plays chime under basic circumstances', function (done) {
+    it('plays chime under basic circumstances', async function () {
       const chrome$ = helper.padChrome$;
-
-      chrome$.window.ep_announce.playChime = done;
-
+      const p = new Promise((resolve) => { chrome$.window.ep_announce.playChime = resolve; });
       chrome$.window.ep_announce.userJoinOrUpdate(null, {userInfo: {userId: 1000}}, () => {});
+      await p;
     });
 
     it('does not play chime if list is uninitialized', function (done) {
@@ -69,7 +70,7 @@ describe('test that the chime rings under various conditions and triggers', func
       chrome$.window.ep_announce.userJoinOrUpdate(null, {userInfo: {userId: 1000}}, done);
     });
 
-    it('does not play chime for events related to the users already in the list of current users', function (done) {
+    it('does not play chime for existing users', function (done) {
       const chrome$ = helper.padChrome$;
 
       chrome$.window.ep_announce.playChime = function () {
@@ -87,7 +88,7 @@ describe('test that the chime rings under various conditions and triggers', func
         padPrefs: {'ep_announce-enabled': false},
         cb() {
           helper.waitFor(() => {
-            chrome$ = helper.padChrome$;
+            const chrome$ = helper.padChrome$;
             return chrome$ && chrome$('#ep_announce-enabled').length === 1;
           }, 1000).done(done);
         },
