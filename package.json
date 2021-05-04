@@ -5,7 +5,7 @@
     "url": "git@github.com:orblivion/ep_announce.git",
     "type": "git"
   },
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "Plays a chime when other users join on Etherpad",
   "author": {
     "name": "Daniel Krol",
