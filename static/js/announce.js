@@ -24,7 +24,7 @@ const announce = (() => {
 
   const self = {
     // API HOOKS
-    postAceInit: (hook, context, callback) => {
+    postAceInit(hook, context, callback) {
       self._pad = pad || window.pad;
       self.updateUserIdList();
 
