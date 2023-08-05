@@ -24,16 +24,17 @@ const announce = (() => {
 
   const self = {
     // API HOOKS
-    postAceInit(hook, context, callback) {
+    postAceInit: (hook, context, callback) => {
       self._pad = pad || window.pad;
       self.updateUserIdList();
 
       chime = new Audio('../static/plugins/ep_announce/static/audio/chime.mp3');
 
-      const $checkbox = $('<input type="checkbox" id="ep_announce-enabled"></input>')
-          .prop('checked', padcookie.getPref('ep_announce-enabled') === true)
-          .on('change', function () {
-            padcookie.setPref('ep_announce-enabled', this.checked);
+      const $checkbox = $('<input type="checkbox" id="ep_announce-enabled"/>');
+
+      $checkbox.prop('checked', padcookie.getPref('ep_announce-enabled') === true)
+          .on('change', () => {
+            padcookie.setPref('ep_announce-enabled', $checkbox.checked);
           });
 
       const $label = $('<label for="ep_announce-enabled" data-l10n-id="pad.ep_announce.checkbox">' +
