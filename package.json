@@ -5,7 +5,7 @@
     "url": "git@github.com:orblivion/ep_announce.git",
     "type": "git"
   },
-  "version": "0.0.30",
+  "version": "0.0.31",
   "description": "Plays a chime when other users join on Etherpad",
   "author": {
     "name": "Daniel Krol",
@@ -20,15 +20,14 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "dependencies": {},
   "funding": {
     "type": "individual",
     "url": "https://etherpad.org/"
   },
   "devDependencies": {
-    "eslint": "^8.57.0",
+    "eslint": "^8.57.1",
     "eslint-config-etherpad": "^4.0.4",
-    "typescript": "^5.4.2"
+    "typescript": "^5.9.3"
   },
   "scripts": {
     "lint": "eslint .",
