@@ -34,7 +34,12 @@ const announce = (() => {
 
       $checkbox.prop('checked', padcookie.getPref('ep_announce-enabled') === true)
           .on('change', () => {
-            padcookie.setPref('ep_announce-enabled', $checkbox.checked);
+            // `$checkbox` is a jQuery wrapper, not the raw DOM element, so
+            // `.checked` is always undefined — the preference was being
+            // written as `undefined` on every toggle (#65). Read the state
+            // through jQuery's `prop('checked')` so the real boolean lands
+            // in the cookie.
+            padcookie.setPref('ep_announce-enabled', $checkbox.prop('checked'));
           });
 
       const $label = $('<label for="ep_announce-enabled" data-l10n-id="pad.ep_announce.checkbox">' +
