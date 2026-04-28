@@ -21,8 +21,11 @@ test.describe('ep_announce — checkbox / cookie wiring', () => {
     const initial = await isCbChecked(page);
     await clickCb(page);
     await expect.poll(() => isCbChecked(page)).toBe(!initial);
+    // Newer Etherpad stores the prefs cookie as `prefsHttp` and no longer
+    // URL-encodes the colon inside the JSON value, so match the literal
+    // `"ep_announce-enabled":<bool>` (the quotes themselves stay encoded).
     await expect.poll(async () => page.evaluate(() => document.cookie)).toMatch(
-        new RegExp(`ep_announce-enabled%22%3A${!initial}`));
+        new RegExp(`ep_announce-enabled%22:${!initial}`));
   });
 });
 
