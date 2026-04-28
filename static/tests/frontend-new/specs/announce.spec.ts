@@ -7,12 +7,20 @@ test.beforeEach(async ({page}) => {
   await expect(page.locator('#ep_announce-enabled')).toHaveCount(1, {timeout: 10_000});
 });
 
+// The settings popup is closed at pad-load, so Playwright actionability
+// rejects clicks on the hidden #ep_announce-enabled checkbox. The legacy
+// mocha spec poked the checkbox directly via jQuery — reproduce that
+// behaviour here via a DOM click() through page.evaluate.
+const isCbChecked = (page: any) => page.evaluate(
+    () => document.querySelector<HTMLInputElement>('#ep_announce-enabled')!.checked);
+const clickCb = (page: any) => page.evaluate(
+    () => document.querySelector<HTMLInputElement>('#ep_announce-enabled')!.click());
+
 test.describe('ep_announce — checkbox / cookie wiring', () => {
   test('clicking the checkbox toggles the cookie', async ({page}) => {
-    const cb = page.locator('#ep_announce-enabled');
-    const initial = await cb.isChecked();
-    await cb.click();
-    await expect.poll(async () => cb.isChecked()).toBe(!initial);
+    const initial = await isCbChecked(page);
+    await clickCb(page);
+    await expect.poll(() => isCbChecked(page)).toBe(!initial);
     await expect.poll(async () => page.evaluate(() => document.cookie)).toMatch(
         new RegExp(`ep_announce-enabled%22%3A${!initial}`));
   });
@@ -22,7 +30,9 @@ test.describe('ep_announce — playChime', () => {
   test.beforeEach(async ({page}) => {
     // Force the feature on regardless of saved cookie state.
     const cb = page.locator('#ep_announce-enabled');
-    if (!(await cb.isChecked())) await cb.click();
+    if (!(await cb.evaluate((el: HTMLInputElement) => el.checked))) {
+      await cb.evaluate((el: HTMLInputElement) => el.click());
+    }
   });
 
   test('plays chime under basic circumstances', async ({page}) => {
@@ -66,8 +76,7 @@ test.describe('ep_announce — playChime', () => {
 
 test.describe('ep_announce — feature disabled', () => {
   test.beforeEach(async ({page}) => {
-    const cb = page.locator('#ep_announce-enabled');
-    if (await cb.isChecked()) await cb.click();
+    if (await isCbChecked(page)) await clickCb(page);
   });
 
   test('does not play chime when disabled', async ({page}) => {
@@ -81,8 +90,7 @@ test.describe('ep_announce — feature disabled', () => {
 
 test.describe('ep_announce — user list updates', () => {
   test.beforeEach(async ({page}) => {
-    const cb = page.locator('#ep_announce-enabled');
-    if (!(await cb.isChecked())) await cb.click();
+    if (!(await isCbChecked(page))) await clickCb(page);
   });
 
   test('updates user list on join/update', async ({page}) => {
